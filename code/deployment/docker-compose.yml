@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: code\deployment\api\Dockerfile
+    ports:
+      - "8000:8000"
+    hostname: api
+  app:
+    build: ./app
+    container_name: app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    
