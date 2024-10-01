@@ -1,24 +1,35 @@
-# app.py
 import streamlit as st
 import requests
-import pandas as pd
 
-st.title('Wine Classifier')
+st.title('Air Quality Classifier')
 
-# Define input fields
-alcohol = st.number_input('Alcohol')
-malic_acid = st.number_input('Malic Acid')
-ash = st.number_input('Ash')
-# (add other fields similarly)
+default_co2 = 2.2
+default_pm25 = 940  # PT08.S1(CO)
+default_pm10 = 131  # PT08.S2(NMHC)
+default_o3 = 1584   # PT08.S5(O3)
+default_no2 = 113   # NO2(GT)
+default_so2 = 1056  # PT08.S3(NOx)
 
-# Make prediction on button click
+co2 = st.number_input('CO (GT)', value=default_co2)
+pm25 = st.number_input('PT08.S5(O3)', value=default_pm25)
+pm10 = st.number_input('PT08.S4(NO2)', value=default_pm10)
+o3 = st.number_input('O3 (ppm)', value=default_o3)
+no2 = st.number_input('NO2 (ppm)', value=default_no2)
+so2 = st.number_input('NOx (GT)', value=default_so2)
+
 if st.button('Predict'):
     input_data = {
-        "alcohol": alcohol,
-        "malic_acid": malic_acid,
-        "ash": ash,
-        # Add other fields similarly
+        "co2": co2,
+        "pm25": pm25,
+        "pm10": pm10,
+        "o3": o3,
+        "no2": no2,
+        "so2": so2,
     }
-    response = requests.post("http://api:8000/predict", json=input_data)
+    response = requests.post("http://localhost:8000/predict", json=input_data)  # Make sure FastAPI is running locally
     prediction = response.json()["prediction"]
-    st.write(f"The predicted wine class is: {prediction}")
+
+    if prediction == 1:
+        st.write("The air quality is appropriate for humans.")
+    else:
+        st.write("The air quality is not appropriate for humans.")
