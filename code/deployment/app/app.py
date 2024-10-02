@@ -4,13 +4,13 @@ import requests
 st.title('Air Quality Classifier')
 
 default_co2 = 2.2
-default_pm25 = 940  # PT08.S1(CO)
-default_pm10 = 131  # PT08.S2(NMHC)
-default_o3 = 1584   # PT08.S5(O3)
-default_no2 = 113   # NO2(GT)
-default_so2 = 1056  # PT08.S3(NOx)
+default_pm25 = 940  
+default_pm10 = 131  
+default_o3 = 1584   
+default_no2 = 113   
+default_so2 = 1056 
 
-co2 = st.number_input('CO (GT)', value=default_co2)
+co2 = st.number_input('CO2', value=default_co2)
 pm25 = st.number_input('PT08.S5(O3)', value=default_pm25)
 pm10 = st.number_input('PT08.S4(NO2)', value=default_pm10)
 o3 = st.number_input('O3 (ppm)', value=default_o3)
@@ -26,7 +26,9 @@ if st.button('Predict'):
         "no2": no2,
         "so2": so2,
     }
-    response = requests.post("http://localhost:8000/predict", json=input_data)  # Make sure FastAPI is running locally
+    response = requests.post("http://api:8000/predict", json=input_data)
+
+    # response = requests.post("http://localhost:8000/predict", json=input_data)  # Make sure FastAPI is running locally
     prediction = response.json()["prediction"]
 
     if prediction == 1:
