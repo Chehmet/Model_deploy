@@ -28,7 +28,6 @@ if st.button('Predict'):
     }
     response = requests.post("http://api:8000/predict", json=input_data)
 
-    # response = requests.post("http://localhost:8000/predict", json=input_data)  # Make sure FastAPI is running locally
     prediction = response.json()["prediction"]
 
     if prediction == 1:
